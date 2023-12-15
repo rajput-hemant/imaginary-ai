@@ -4,7 +4,10 @@ export function HeroSkeleton() {
   return (
     <section className="grid lg:grid-cols-4 sm:grid-cols-3 xs:grid-cols-2 grid-cols-1 gap-4 w-full">
       {Array.from({ length: 12 }).map((_, i) => (
-        <figure key={i} className="space-y-4 w-full">
+        <figure
+          key={i}
+          className="space-y-4 w-full animate-in zoom-in-50 duration-500 ease-out"
+        >
           <Skeleton className="w-full h-44" />
 
           <figcaption className="flex gap-2">

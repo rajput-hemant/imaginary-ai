@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 
-import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
-import { Button, buttonVariants } from "./ui/button";
+import { CreateImage } from "./create-image-dialog";
+import { Button } from "./ui/button";
 
 export function SiteHeader() {
   return (
@@ -17,15 +17,7 @@ export function SiteHeader() {
         </Link>
 
         <div className="md:flex flex-1 justify-end gap-4 hidden">
-          <Link
-            to="/create"
-            className={cn(
-              buttonVariants({ size: "sm", variant: "outline" }),
-              "shadow-sm"
-            )}
-          >
-            Create Image
-          </Link>
+          <CreateImage />
 
           <Button
             size="sm"
@@ -35,7 +27,7 @@ export function SiteHeader() {
                 description: "This feature is not available yet!",
               })
             }
-            className="shadow-sm"
+            className="shadow-sm rounded-lg"
           >
             Create Video
           </Button>

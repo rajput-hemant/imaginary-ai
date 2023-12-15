@@ -2,7 +2,7 @@ import { clsx } from "clsx";
 import FileSaver from "file-saver";
 import { twMerge } from "tailwind-merge";
 
-import { surpriseMePrompts } from "../constants";
+import { PROMPTS } from "../constants";
 
 /**
  * @param  {import("class-variance-authority/dist/types").ClassValue[]} inputs
@@ -23,11 +23,11 @@ export function validateEnv(env, name) {
   return env;
 }
 
-export function getRandomPrompts(prompt) {
-  const randomIndex = Math.floor(Math.random() * surpriseMePrompts.length);
-  const randomPrompt = surpriseMePrompts[randomIndex];
-  if (randomPrompt === prompt) return getRandomPrompts(prompt);
-  return randomPrompt;
+/**
+ * @returns {string} A random prompt
+ */
+export function getRandomPrompts() {
+  return PROMPTS[Math.floor(Math.random() * PROMPTS.length)];
 }
 
 export async function downloadImage(_id, photo) {
