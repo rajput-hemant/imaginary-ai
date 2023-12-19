@@ -1,13 +1,12 @@
 import React from "react";
-import { Check, Clipboard, Heart, Search, Share2 } from "lucide-react";
-import { Link } from "react-router-dom";
-import useSWR from "swr";
+import { Check, Search } from "lucide-react";
+import { Link, useLoaderData, useNavigation } from "react-router-dom";
 
 import { toast } from "@/hooks/use-toast";
 import { CreateImage } from "@/components/create-image-dialog";
+import { PostDialog } from "@/components/post-dialog";
 import { HeroSkeleton } from "@/components/skeletons/hero";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { ToastAction } from "@/components/ui/toast";
 import {
@@ -19,11 +18,8 @@ import {
 export default function HomePage() {
   const [query, setQuery] = React.useState("");
 
-  const { data, error, isLoading } = useSWR("/api/v1/post", () =>
-    fetch(`${import.meta.env.VITE_IMAGINARY_API_KEY}/api/v1/post`).then((res) =>
-      res.json()
-    )
-  );
+  const data = useLoaderData();
+  const { state } = useNavigation();
 
   function filterPosts(posts) {
     if (!query) return posts;
@@ -55,7 +51,7 @@ export default function HomePage() {
   return (
     <main className="container flex flex-col items-center gap-6 md:gap-20 p-4 md:p-8">
       <header className="md:mt-16 mt-4 space-y-2">
-        <h1 className="mt-4 font-heading text-4xl font-bold animate-in slide-in-from-top-full zoom-in-50 text-center [text-shadow:_0_4px_0_#e1e1e1] dark:bg-gradient-to-br dark:from-foreground dark:to-gray-500 dark:bg-clip-text dark:text-transparent dark:[text-shadow:none] md:text-5xl lg:text-6xl xl:text-7xl duration-500 fade-in-25">
+        <h1 className="mt-4 font-heading text-4xl font-bold animate-in slide-in-from-bottom-1/2 zoom-in-50 text-center [text-shadow:_0_4px_0_#e1e1e1] dark:bg-gradient-to-br dark:from-foreground dark:to-gray-500 dark:bg-clip-text dark:text-transparent dark:[text-shadow:none] md:text-5xl lg:text-6xl xl:text-7xl duration-500 fade-in-25">
           The Community Showcase
         </h1>
 
@@ -92,57 +88,20 @@ export default function HomePage() {
         />
       </div>
 
-      {error && <div className="bg-red-100"></div>}
-
-      {isLoading && <HeroSkeleton />}
+      {state === "loading" && <HeroSkeleton />}
 
       <section className="grid xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
         {filterPosts(data?.data ?? []).map(({ _id, name, photo, prompt }) => (
           <figure key={_id} className="space-y-2">
-            <Dialog>
-              <DialogTrigger className="h-44">
-                <div className="rounded-lg shadow border hover:shadow-lg p-0.5 transition duration-300 group overflow-hidden hover:-translate-y-1">
-                  <img
-                    src={photo}
-                    className="object-cover aspect-video w-full rounded-lg group-hover:scale-105 duration-300 delay-300 ease-in"
-                  />
-                </div>
-              </DialogTrigger>
-
-              <DialogContent>
-                <div className="rounded-lg shadow border hover:shadow-lg p-0.5 w-full mt-4">
-                  <img
-                    src={photo}
-                    className="object-cover aspect-square rounded-lg"
-                  />
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <p className="text-lg">
-                    By{" "}
-                    <span className="underline underline-offset-4 cursor-pointer">
-                      {name}
-                    </span>
-                  </p>
-
-                  <div className="flex">
-                    <Button size="icon" variant="ghost">
-                      <Heart className="h-5 w-5" />
-                    </Button>
-                    <Button size="icon" variant="ghost">
-                      <Clipboard className="h-5 w-5" />
-                    </Button>
-                    <Button size="icon" variant="ghost">
-                      <Share2 className="h-5 w-5" />
-                    </Button>
-                  </div>
-                </div>
-
-                <p className="font-medium">
-                  Prompt: <span className="font-normal text-sm">{prompt}</span>
-                </p>
-              </DialogContent>
-            </Dialog>
+            <PostDialog name={name} photo={photo} prompt={prompt}>
+              {/* dialog trigger */}
+              <div className="rounded-lg shadow border hover:shadow-lg p-0.5 transition duration-300 group overflow-hidden hover:-translate-y-1">
+                <img
+                  src={photo}
+                  className="object-cover aspect-video w-full rounded-lg group-hover:scale-105 duration-300 delay-300 ease-in"
+                />
+              </div>
+            </PostDialog>
 
             <figcaption className="flex gap-2">
               <div className="h-9 w-9 rounded-full bg-muted flex items-center justify-center shrink-0 shadow uppercase">

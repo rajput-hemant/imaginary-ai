@@ -1,5 +1,4 @@
 import { clsx } from "clsx";
-import FileSaver from "file-saver";
 import { twMerge } from "tailwind-merge";
 
 import { PROMPTS } from "../constants";
@@ -30,6 +29,13 @@ export function getRandomPrompts() {
   return PROMPTS[Math.floor(Math.random() * PROMPTS.length)];
 }
 
-export async function downloadImage(_id, photo) {
-  FileSaver.saveAs(photo, `download-${_id}.jpg`);
+/**
+ * @returns {Crypto} The crypto object from the browser or node
+ */
+export function getCrypto() {
+  try {
+    return window.crypto;
+  } catch {
+    return crypto;
+  }
 }

@@ -14,7 +14,13 @@ const router = createBrowserRouter([
     ),
 
     children: [
-      { path: "/", element: <HomePage /> },
+      {
+        path: "/",
+        element: <HomePage />,
+        loader: async () => {
+          return fetch(`${import.meta.env.VITE_IMAGINARY_API_KEY}/api/v1/post`);
+        },
+      },
       { path: "*", element: <NotFound /> },
     ],
   },

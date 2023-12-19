@@ -6,7 +6,7 @@ export function HeroSkeleton() {
       {Array.from({ length: 12 }).map((_, i) => (
         <figure
           key={i}
-          className="space-y-4 w-full animate-in zoom-in-50 duration-500 ease-out"
+          className="space-y-4 w-full animate-in duration-500 slide-in-from-bottom-full ease-out"
         >
           <Skeleton className="w-full h-44" />
 
